@@ -20,7 +20,7 @@ class App extends Component {
         divcode: 'div1',
         game: 1,
         goalsAway: 4,
-        goalsHome: 5,
+        goalsHome: 4,
         homeTeam: 'team2',
         lock: false,
         roundNumber: '1',
@@ -94,7 +94,7 @@ class App extends Component {
         date: '',
         divcode: 'div1',
         game: 1,
-        goalsAway: 1000000,
+        goalsAway: 70,
         goalsHome: 70,
         homeTeam: 'team7',
         lock: false,
@@ -106,8 +106,8 @@ class App extends Component {
         date: '',
         divcode: 'div1',
         game: 1,
-        goalsAway: 2,
-        goalsHome: 70,
+        goalsAway: 0,
+        goalsHome: 0,
         homeTeam: 'team1',
         lock: false,
         roundNumber: '2',
@@ -145,8 +145,8 @@ class App extends Component {
         date: '',
         divcode: 'div1',
         game: 1,
-        goalsAway: 100,
-        goalsHome: 70,
+        goalsAway: 0,
+        goalsHome: 0,
         homeTeam: 'team7',
         lock: false,
         roundNumber: '3',
@@ -229,9 +229,11 @@ class App extends Component {
             div: x.div,
             win: 0,
             loss: 0,
+            draw: 0,
             points: 0,
             goals: 0,
             percent: 0,
+
 
           }
 
@@ -334,6 +336,48 @@ class App extends Component {
             }
 
           })
+        }
+        // DRAWS
+        else {
+          this.teams.map((x, index) => {
+            const { homeTeam, awayteam, goalsAway, divcode } = this.drawRound[i][o];
+
+            if (this.state.ladder[`${index}`].teamName == awayteam) {
+              this.setState({
+                ...this.state,
+                ladder: {
+                  ...this.state.ladder,
+                  ...this.state.ladder[index] = {
+                    ...this.state.ladder[index],
+                    draw: this.state.ladder[index].draw + 1,
+                    points: this.state.ladder[index].points + 2,
+                    goals: this.state.ladder[index].goals + goalsAway,
+                  }
+                }
+              })
+
+              console.log('AWAY TEAM this.state', this.state);
+            }
+
+            if (this.state.ladder[`${index}`].teamName == homeTeam) {
+              console.log('ADD A DRAW');
+              this.setState({
+                ...this.state,
+                ladder: {
+                  ...this.state.ladder,
+                  ...this.state.ladder[index] = {
+                    ...this.state.ladder[index],
+                    draw: this.state.ladder[index].draw + 1,
+                    points: this.state.ladder[index].points + 2,
+                    goals: this.state.ladder[index].goals + homeTeam,
+                  }
+                }
+              })
+            }
+
+          })
+
+
         }
         // else {
         //   newLadder[`${this.drawRound[i][o].awayteam}`].points += 2//assigns the new points and goals to the teams
